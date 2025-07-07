@@ -59,6 +59,9 @@
 Необходимые тесты для проверки этого API вызываются при запуске npm run test:local из папки tests/postman 
 Приложите скриншот тестов и скриншот состояния топиков Kafka http://localhost:8090 
 
+![tests](./images/tests.png)
+
+![topics](./images/topics.png)
 
 ## Задание 3
 
@@ -66,7 +69,6 @@
 Вам, как архитектору осталось самое сложное:
  - реализовать CI/CD для сборки прокси сервиса
  - реализовать необходимые конфигурационные файлы для переключения трафика.
-
 
 ### CI/CD
 
@@ -110,6 +112,9 @@ jobs:
 Как только сборка отработает и в github registry появятся ваши образы, можно переходить к блоку настройки Kubernetes
 Успешным результатом данного шага является "зеленая" сборка и "зеленые" тесты
 
+![ci-cd](./images/ci-cd.png)
+
+![packs](./images/packs.png)
 
 ### Proxy в Kubernetes
 
@@ -271,8 +276,15 @@ cat .docker/config.json | base64
   Часть тестов с health-чек упадет, но создание событий отработает.
   Откройте логи event-service и сделайте скриншот обработки событий
 
+![events](./images/kuber-events-log.png)
+
+
 #### Шаг 3
 Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и  скриншот вывода event-service после вызова тестов.
+
+![event-service](./images/kuber-events-log.png)
+
+![output](./images/kuber-movies-output.png) 
 
 
 ## Задание 4
@@ -349,6 +361,9 @@ minikube tunnel
 https://cinemaabyss.example.com/api/movies
 и приложите скриншот развертывания helm и вывода https://cinemaabyss.example.com/api/movies
 
+![helm](./images/helm-deploy.png)
+
+![topics](./images/helm-movies.png)
 
 # Задание 5
 Компания планирует активно развиваться и для повышения надежности, безопасности, реализации сетевых паттернов типа Circuit Breaker и канареечного деплоя вам как архитектору необходимо развернуть istio и настроить circuit breaker для monolith и movies сервисов.
@@ -414,6 +429,8 @@ You can see 21 for the upstream_rq_pending_overflow value which means 21 calls s
 ```
 
 Приложите скриншот работы circuit breaker'а
+
+![helm](./images/breaker.png)
 
 Удаляем все
 ```bash

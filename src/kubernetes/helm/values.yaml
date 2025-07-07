@@ -5,7 +5,7 @@ global:
 
 # Image pull secrets
 imagePullSecrets:
-  dockerconfigjson: ewoJImF1dGhzIjogewoJCSJnaGNyLmlvIjogewoJCQkiYXV0aCI6
+  dockerconfigjson: ewogICJhdXRocyI6IHsKICAgICJnaGNyLmlvIjogewogICAgICAiYXV0aCI6ICJaM0psWjJ0MWVtNWxkSE52ZGpFNU9UZzZaMmh3WHpGSFUwWkVTakI2VDNBNVFYbDBha2t3TW5seE1HdFBURzlrZHpSSVV6QjRiekZTYkE9PSIKICAgIH0KICB9LAogICJjcmVkc1N0b3JlIjogImRlc2t0b3AiCn0K
 # Database configuration
 database:
   host: postgres
@@ -33,7 +33,7 @@ database:
 monolith:
   enabled: true
   image:
-    repository: ghcr.io/db-exp/cinemaabysstest/monolith
+    repository: ghcr.io/gregkuznetsov1998/practicum-2/monolith
     tag: latest
     pullPolicy: Always
   replicas: 1
@@ -53,7 +53,7 @@ monolith:
 proxyService:
   enabled: true
   image:
-    repository: ghcr.io/db-exp/cinemaabysstest/proxy-service
+    repository: ghcr.io/gregkuznetsov1998/practicum-2/proxy-service
     tag: latest
     pullPolicy: Always
   replicas: 1
@@ -67,13 +67,13 @@ proxyService:
   service:
     port: 80
     targetPort: 8000
-    type: ClusterIP
+    type: LoadBalancer
 
 # Movies service configuration
 moviesService:
   enabled: true
   image:
-    repository: ghcr.io/db-exp/cinemaabysstest/movies-service
+    repository: ghcr.io/gregkuznetsov1998/practicum-2/movies-service
     tag: latest
     pullPolicy: Always
   replicas: 1
@@ -93,7 +93,7 @@ moviesService:
 eventsService:
   enabled: true
   image:
-    repository: ghcr.io/db-exp/cinemaabysstest/events-service
+    repository: ghcr.io/gregkuznetsov1998/practicum-2/events-service
     tag: latest
     pullPolicy: Always
   replicas: 1

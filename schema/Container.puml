@@ -1,0 +1,45 @@
+@startuml
+!include <C4/C4_Container>
+
+title Контейнерная диаграмма CinemaAbyss с Kubernetes/Istio
+
+Person(user, "Пользователь", "Пользователь веб-приложения")
+
+System_Boundary(cinema_system, "CinemaAbyss") {
+    Container(ingress, "Ingress", "Kubernetes Ingress", "Точка входа для внешнего трафика")
+    Container(istio, "Istio", "Service Mesh", "Управление трафиком, Circuit Breaker, TLS")
+    
+    Container(proxy, "Proxy", "Golang", "Маршрутизация запросов, постепенная миграция")
+    Container(monolith, "Monolith Service", "Golang", "Основной монолитный сервис")
+    Container(movies, "Movies Service", "Golang", "Управление фильмами")
+    Container(events, "Events Service", "Golang", "Управление киносеансами")
+    
+    ContainerDb(postgres, "PostgreSQL", "База данных", "Хранение данных приложения")
+    ContainerQueue(kafka, "Kafka", "Message Broker", "Обработка событий")
+    Container(zookeeper, "ZooKeeper", "Координация Kafka")
+}
+
+' Связи пользователя
+Rel(user, ingress, "HTTPS запросы", "443")
+
+' Связи Ingress и Istio
+Rel(ingress, istio, "Трафик с TLS", "HTTPS")
+Rel(istio, proxy, "Внутренний трафик", "HTTP/mTLS")
+
+' Связи API Gateway
+Rel(proxy, monolith, "Запросы к монолиту", "HTTP (Istio CB)")
+Rel(proxy, movies, "Часть запросов о фильмах", "HTTP (Istio CB)")
+Rel(proxy, events, "Запросы о событиях", "HTTP (Istio CB)")
+
+' Связи микросервисов с БД
+Rel(monolith, postgres, "JDBC", "5432")
+Rel(movies, postgres, "JDBC", "5432")
+
+' Связи событийного взаимодействия
+Rel(events, kafka, "Чтение/запись событий", "Kafka")
+Rel(kafka, zookeeper, "Координация", "2181")
+
+' Аннотации для Istio
+AddRelTag("Istio CB", $textColor="#ff0000", $lineColor="#ff0000", $lineStyle="DashedLine()")
+
+@enduml
